@@ -35,6 +35,16 @@ class TestApproval(unittest.TestCase):
         with self.assertRaises(ApprovalRequired):
             require_approval(a)
 
+    def test_expired_raises(self):
+        a = Approval("h", "act", "2026-10-17T00:00:00Z", "scope", expires_at="2026-10-16T00:00:00Z")
+        with self.assertRaises(ApprovalRequired):
+            require_approval(a, now="2026-10-17T00:00:00Z")
+
+    def test_incomplete_raises(self):
+        a = Approval("", "act", "2026-10-17T00:00:00Z", "scope")
+        with self.assertRaises(ApprovalRequired):
+            require_approval(a)
+
     def test_explicit_passes(self):
         a = Approval("h", "act", "2026-10-17T00:00:00Z", "scope")
         self.assertIs(require_approval(a), a)
@@ -49,6 +59,11 @@ class TestProvenance(unittest.TestCase):
         with self.assertRaises(ProvenanceRequired):
             require_provenance(None)
 
+    def test_bad_state_raises(self):
+        p = Provenance("fixture", "1.0.0", "guessed")
+        with self.assertRaises(ProvenanceRequired):
+            require_provenance(p)
+
     def test_valid_passes(self):
         p = Provenance("fixture", "1.0.0", "unverified")
         self.assertIs(require_provenance(p), p)
@@ -62,6 +77,11 @@ class TestConsent(unittest.TestCase):
         c = Consent("human:1", "read", granted=True, withdrawn=True)
         with self.assertRaises(ConsentRequired):
             require_consent(c, required_scope="read")
+
+    def test_scope_mismatch_raises(self):
+        c = Consent("human:1", "read", granted=True)
+        with self.assertRaises(ConsentRequired):
+            require_consent(c, required_scope="write")
 
     def test_valid_passes(self):
         c = Consent("human:1", "read", granted=True)
