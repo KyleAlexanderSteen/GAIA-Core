@@ -5,6 +5,7 @@ from .authority import AuthorityBoundary, apply_change, detect_drift
 from .stub import not_implemented
 from .provenance import Provenance, require_provenance
 from .consent import Consent, require_consent
+from .void import NullState, classify_null, detect_void_collapse
 
 __all__ = [
     "run_loop",
@@ -19,4 +20,7 @@ __all__ = [
     "require_provenance",
     "Consent",
     "require_consent",
+    "NullState",
+    "classify_null",
+    "detect_void_collapse",
 ]
