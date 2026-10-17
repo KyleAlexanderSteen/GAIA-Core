@@ -6,6 +6,7 @@ from .stub import not_implemented
 from .provenance import Provenance, require_provenance
 from .consent import Consent, require_consent
 from .void import NullState, classify_null, detect_void_collapse
+from .terra import Session, BrownState, require_ariditas, require_brown_relation
 
 __all__ = [
     "run_loop",
@@ -23,4 +24,8 @@ __all__ = [
     "NullState",
     "classify_null",
     "detect_void_collapse",
+    "Session",
+    "BrownState",
+    "require_ariditas",
+    "require_brown_relation",
 ]
