@@ -1,49 +1,23 @@
-# gaia-core
+# GAIA-Core
 
-**Status:** Proposed architecture component — not implemented.
+Shared foundation for GAIA: types, contracts, utilities, and event schemas.
 
-**Domain:** Shared Foundation (types, contracts, utilities, error codes, event schemas)
+## Workflow contracts (fail closed)
 
-**Visibility:** Internal
+This repository now contains the minimum contracts for:
 
-**Source:** [GAIA Super-Intelligent Application Architecture Report](https://github.com/KyleAlexanderSteen/GAIA-Documentation) (2026-10-13)
+1. Intent → plan → execute → observe → audit (`run_loop`)
+2. Human approval gate (`require_approval`) — explicit allow only
+3. Fail-loud stub (`not_implemented`)
+4. Provenance on every result (`require_provenance`)
+5. Consent check before human-linked action (`require_consent`)
 
-**Traceability:** GAIA-Documentation issues #1–#6
+The research → gap → issue → PR → evidence loop is enforced in GAIA-Standards (templates and CI), not here.
 
-## Purpose
-Shared library and contract repository for the entire GAIA system. Single source of truth for cross-cutting concerns. Dependency of all other repositories; not a running service.
+No Super Operating System is claimed. These are contracts and checks. Unbuilt paths raise; they do not report success.
 
-## Initial Directory Structure (proposed)
+## Test
+
+```bash
+PYTHONPATH=src python -m unittest tests/test_workflows.py
 ```
-gaia-core/
-├── src/
-│   ├── types/          # Shared data models (Message, Session, User, AgentTask, etc.)
-│   ├── contracts/      # OpenAPI / Protobuf schemas
-│   ├── errors/         # Standardized error taxonomy
-│   ├── utils/          # Logging, ID generators, retry helpers
-│   └── events/         # Event bus message definitions
-├── package.json / pyproject.toml
-├── README.md
-└── tests/
-```
-
-## Proposed Interfaces and Dependencies
-- Published as internal packages (`@gaia/core`, `gaia-core`).
-- Depends on: none (foundation).
-- Used by: all other GAIA repositories.
-
-## Security and Access-Control Requirements
-- No secrets or credentials stored here.
-- Contracts must not embed privileged assumptions.
-- Least-privilege by default (see GAIA-Documentation #2).
-
-## Tests and Acceptance Criteria
-- [ ] Shared types compile and are importable by dependent packages.
-- [ ] Contracts are versioned and backward-compatible.
-- [ ] No implementation claims beyond scaffolding.
-- Linked to GAIA-Documentation #1 (service contracts).
-
-## Development Instructions
-This repository is scaffolding only. Do not claim implemented capabilities. Resolve contracts in GAIA-Documentation #1 before adding real code.
-
-**Unresolved:** Authoritative machine-readable contracts, monorepo vs multi-repo decision, full dependency inventory.
