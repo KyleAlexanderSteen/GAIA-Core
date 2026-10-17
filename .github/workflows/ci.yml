@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run unit tests
-        run: PYTHONPATH=src python -m unittest tests/test_workflows.py
+        run: PYTHONPATH=src python -m unittest tests/test_workflows.py tests/test_authority.py
 
   verify:
     name: Workflow contract verification
@@ -30,4 +30,6 @@ jobs:
         with:
           python-version: "3.12"
       - name: Independent verification
-        run: PYTHONPATH=src python -m gaia_core.verify
+        run: |
+          PYTHONPATH=src python -m gaia_core.verify
+          PYTHONPATH=src python -m gaia_core.verify_authority
